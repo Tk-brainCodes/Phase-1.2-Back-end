@@ -17,6 +17,7 @@ app.get("/api/rates/", async (req, res) => {
     let currencies = req.query.currency;
 
     //covert from the BASE to CURRENCIES
+    //display the currencies converted
  
     //RET
     let body = {
