@@ -11,14 +11,13 @@ app.use(express.json());
 //Create your endpoints/route handlers
 
 app.get("/api/rates/", async (req, res) => {
-    const response = await axios.get(`https://api.exchangeratesapi.io/latest`)
+    const response = await axios.get(`https://api.exchangeratesapi.io/latest?base=${req.query.base}&symbols=${req.query.currency}`)
+
+    // ?base=CZK&currency=EUR,GBP,USD
 
     let base = req.query.base
     let currencies = req.query.currency;
 
-    //covert from the BASE to CURRENCIES
-    //display the currencies converted
- 
     //RET
     let body = {
         base,
@@ -26,11 +25,15 @@ app.get("/api/rates/", async (req, res) => {
         currencies,
         rates: response.data.rates
     }
-    return res.json({
-        "results": {
-            body
-        }
-    })
+    try {
+        return res.json({
+            "results": {
+                body
+            }
+        })
+    } catch (error) {
+        res.send(res.statusCode, error); //handle unsuccessful request with status code
+    }
 });
 
 
